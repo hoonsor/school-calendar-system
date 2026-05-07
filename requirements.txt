@@ -1,0 +1,9 @@
+# 學校行事曆整合系統
+# School Calendar Integration System
+
+Flask==3.0.0
+requests==2.31.0
+icalendar==5.0.11
+pytz==2024.1
+line-bot-sdk==2.4.1
+python-dotenv==1.0.0
