@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 from flask import Flask, jsonify, Response, send_file, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
+import os
 
 # 匯入各模組
 from scraper.school_calendar_scraper import SchoolCalendarScraper

@@ -10,7 +10,7 @@ from flask import Flask, request, abort, jsonify
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, PostbackEvent,
     FlexSendMessage, BubbleContainer, BoxComponent,
     TextComponent, ButtonComponent, PostbackAction
 )

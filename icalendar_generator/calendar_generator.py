@@ -10,6 +10,8 @@ from icalendar import Calendar, Event, Timezone
 TAIPEI_TZ = pytz.timezone('Asia/Taipei')
 
 class CalendarGenerator:
+
+class CalendarGenerator:
     def __init__(self, school_name: str = "臺灣學校"):
         self.school_name = school_name
         self.calendar = Calendar()
@@ -36,8 +38,8 @@ class CalendarGenerator:
             year = int(date_str[:4])
             month = int(date_str[4:6])
             day = int(date_str[6:8])
-            start_date = Taipei_TZ.localize(datetime(year, month, day, 0, 0, 0))
-            end_date = Taipei_TZ.localize(datetime(year, month, day, 23, 59, 59))
+            start_date = TAIPEI_TZ.localize(datetime(year, month, day, 0, 0, 0))
+            end_date = TAIPEI_TZ.localize(datetime(year, month, day, 23, 59, 59))
         else:
             start_date = datetime.strptime(date_str, '%Y-%m-%d')
             end_date = start_date + timedelta(days=1)
@@ -73,7 +75,7 @@ class CalendarGenerator:
             year = int(date_str[:4])
             month = int(date_str[4:6])
             day = int(date_str[6:8])
-            start_date = Taipei_TZ.localize(datetime(year, month, day, 0, 0, 0))
+            start_date = TAIPEI_TZ.localize(datetime(year, month, day, 0, 0, 0))
         else:
             start_date = datetime.strptime(date_str, '%Y-%m-%d')
         

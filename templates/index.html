@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學校行事曆 - 加入 Google Calendar / Apple Calendar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 15px;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calendar-list {
+            list-style: none;
+        }
+
+        .calendar-list li {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s;
+        }
+
+        .calendar-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .calendar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .google-icon { background: #4285f4; color: white; }
+        .apple-icon { background: #000; color: white; }
+        .outlook-icon { background: #0078d4; color: white; }
+        .ics-icon { background: #28a745; color: white; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .url-box {
+            background: #1a1a2e;
+            color: #00ff88;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>📅 學校行事曆</h1>
+            <p class="subtitle">輕鬆將學校行事曆加入你的 Google Calendar、Apple Calendar 或任何行事曆應用</p>
+
+            <!-- 功能特色 -->
+            <div class="section">
+                <h2>✨ 功能特色</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🔄</div>
+                        <div>自動同步</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div>多平台支援</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔔</div>
+                        <div>LINE 通知</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div>即時更新</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Calendar -->
+            <div class="section">
+                <h2>📌 加入 Google Calendar</h2>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>複製 Calendar ID</strong>
+                        <div class="url-box" id="calendar-id">school-calendar@group.calendar.google.com</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>在 Google Calendar 中新增</strong>
+                        <p>其他日曆 → 從 URL 新增日曆 → 貼上上方 ID</p>
+                    </div>
+                </div>
+                <a href="https://calendar.google.com" target="_blank" class="btn btn-primary">
+                    🔗 開啟 Google Calendar
+                </a>
+            </div>
+
+            <!-- Apple Calendar / iCal -->
+            <div class="section">
+                <h2>🍎 加入 Apple Calendar / iCal</h2>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>下載 ICS 檔案</strong>
+                        <p>直接訂閱此 ICS URL，自動同步到你的行事曆</p>
+                    </div>
+                </div>
+                <div class="url-box" id="ics-url">https://school-calendar.vercel.app/calendar/school.ics</div>
+                <button class="btn btn-secondary" onclick="copyToClipboard('ics-url')">
+                    📋 複製 ICS 連結
+                </button>
+            </div>
+
+            <!-- 其他平台 -->
+            <div class="section">
+                <h2>📱 其他行事曆應用</h2>
+                <ul class="calendar-list">
+                    <li>
+                        <div class="calendar-icon outlook-icon">📧</div>
+                        <div>
+                            <strong>Microsoft Outlook</strong>
+                            <p>訂閱 ICS URL 即可同步</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="calendar-icon ics-icon">📄</div>
+                        <div>
+                            <strong>通用 ICS 格式</strong>
+                            <p>支援所有標準行事曆應用</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- LINE 訂閱 -->
+            <div class="section">
+                <h2>💬 LINE 通知訂閱</h2>
+                <div class="qr-section">
+                    <div class="qr-code">
+                        <span style="font-size: 3rem;">📱</span>
+                    </div>
+                    <p>加入 LINE@ 好友，接收即時放假通知</p>
+                    <button class="btn btn-primary" onclick="alert('請加入 LINE@: @school-calendar')">
+                        ➕ 加入 LINE 好友
+                    </button>
+                </div>
+            </div>
+
+            <!-- API 文件 -->
+            <div class="section">
+                <h2>🔌 API 端點</h2>
+                <ul class="calendar-list">
+                    <li>
+                        <div style="flex: 1;">
+                            <code style="background: #f0f0f0; padding: 5px 10px; border-radius: 5px;">GET /api/calendar</code>
+                            <p>取得所有行事曆事件 (JSON)</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="flex: 1;">
+                            <code style="background: #f0f0f0; padding: 5px 10px; border-radius: 5px;">GET /calendar/school.ics</code>
+                            <p>取得 ICS 格式行事曆</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="flex: 1;">
+                            <code style="background: #f0f0f0; padding: 5px 10px; border-radius: 5px;">GET /api/holidays?year=2025</code>
+                            <p>取得特定年份假期</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('已複製到剪貼簿！');
+            });
+        }
+
+        // 更新ICS URL
+        const currentHost = window.location.origin;
+        document.getElementById('ics-url').textContent = currentHost + '/calendar/school.ics';
+    </script>
+</body>
+</html>
